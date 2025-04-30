@@ -12,7 +12,7 @@ Video demo kết quả: https://drive.google.com/file/d/1a7-xC8VH5uqeKXG2GPDaJvr
 - Hồ Hữu Đại       3122410066
 - Huỳnh Tấn Dương  3122410061
 
-- MÔ HÌNH MẠNG
+MÔ HÌNH MẠNG
 ![](topology.png)
 
 ## I. CẤU HÌNH DHCP Ở SWITCH
@@ -31,13 +31,13 @@ Video demo kết quả: https://drive.google.com/file/d/1a7-xC8VH5uqeKXG2GPDaJvr
 - Dynamic ARP Inspection (DAI) là một cơ chế bảo mật dùng để ngăn chặn ARP Spoofing, nó kiểm tra tính hợp lệ của các gói ARP bằng cách so sánh thông tin trong gói ARP với cơ sở dữ liệu binding của DHCP Snooping.
 
 - So sánh IP-MAC trong gói ARP với thông tin trong DHCP Snooping binding table:
-- Nếu đúng: cho phép gói ARP đi qua.
-- Nếu sai: chặn gói ARP lại và có thể log hoặc báo động.
+	- Nếu đúng: cho phép gói ARP đi qua.
+	- Nếu sai: chặn gói ARP lại và có thể log hoặc báo động.
 - Ngăn chặn kẻ tấn công giả mạo địa chỉ MAC/IP để đánh lừa client hoặc gateway.
 
 - Trong tấn công ARP Spoofing, kẻ tấn công sẽ gửi các gói ARP Reply giả mạo với nội dung:
-- **(MAC của kẻ tấn công – IP của nạn nhân) gửi đến Gateway**
-- **(MAC của kẻ tấn công – IP của Gateway) gửi đến nạn nhân**
+	- **(MAC của kẻ tấn công – IP của nạn nhân) gửi đến Gateway**
+	- **(MAC của kẻ tấn công – IP của Gateway) gửi đến nạn nhân**
 - → Mục đích là đánh lừa cả hai bên, khiến lưu lượng đi qua kẻ tấn công.
 
 - Tuy nhiên, nếu switch được bật DHCP Snooping + DAI, thì các gói ARP này sẽ bị kiểm tra. Switch sẽ so sánh thông tin trong gói ARP với bảng DHCP Snooping Binding Table (chứa cặp MAC-IP hợp lệ).
