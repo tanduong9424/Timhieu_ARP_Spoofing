@@ -17,7 +17,7 @@ MÔ HÌNH MẠNG
 
 ## I. CẤU HÌNH DHCP Ở SWITCH
 - ```config terminal```
-- ```ip dhcp excluded-address 192.168.1.1 192.168.1.5``` (Không cấp dãy ip 192.168.1.1->192.168.1.5 cho clientclient)
+- ```ip dhcp excluded-address 192.168.1.1 192.168.1.5``` (Không cấp dãy ip 192.168.1.1->192.168.1.5 cho client)
 - ```ip dhcp pool DHCP_ARP``` (đặt tên cho pool DHCPDHCP)
 - ```network 192.168.1.0 255.255.255.0``` (dãy mạng được dùng để cấp phát)
 - ```default-router 192.168.1.1``` (chỉ định default gatewaygateway)
@@ -38,12 +38,13 @@ MÔ HÌNH MẠNG
 - Trong tấn công ARP Spoofing, kẻ tấn công sẽ gửi các gói ARP Reply giả mạo với nội dung:
 	- **(MAC của kẻ tấn công – IP của nạn nhân) gửi đến Gateway**
 	- **(MAC của kẻ tấn công – IP của Gateway) gửi đến nạn nhân**
-- → Mục đích là đánh lừa cả hai bên, khiến lưu lượng đi qua kẻ tấn công.
+
+→ Mục đích là đánh lừa cả hai bên, khiến lưu lượng đi qua kẻ tấn công.
 
 - Tuy nhiên, nếu switch được bật DHCP Snooping + DAI, thì các gói ARP này sẽ bị kiểm tra. Switch sẽ so sánh thông tin trong gói ARP với bảng DHCP Snooping Binding Table (chứa cặp MAC-IP hợp lệ).
 - Do trong bảng chỉ có cặp hợp lệ là (MAC của kẻ tấn công – IP của kẻ tấn công), nên nếu gói ARP khai là (MAC của kẻ tấn công – IP của nạn nhân hoặc gateway) thì sẽ không khớp binding → gói bị đánh rớt (drop) và không đến được nạn nhân hay gateway.
 
-- → Nhờ vậy, DAI sẽ ngăn chặn hiệu quả ARP Spoofing.
+→ Nhờ vậy, DAI sẽ ngăn chặn hiệu quả ARP Spoofing.
 
 ## III. CẤU HÌNH DHCP SNOOPING
 - ```config terminal```
