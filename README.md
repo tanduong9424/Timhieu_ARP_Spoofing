@@ -21,7 +21,7 @@ Video demo kết quả: https://drive.google.com/file/d/1a7-xC8VH5uqeKXG2GPDaJvr
 - ```ip dhcp pool DHCP_ARP``` (đặt tên cho pool DHCPDHCP)
 - ```network 192.168.1.0 255.255.255.0``` (dãy mạng được dùng để cấp phát)
 - ```default-router 192.168.1.1``` (chỉ định default gatewaygateway)
-- ```dns-server 8.8.8.8 1.1.1.1`` (chỉ định DNS serverserver)
+- ```dns-server 8.8.8.8 1.1.1.1``` (chỉ định DNS serverserver)
 - ```end```
 - ```show run | s dhcp``` (kiểm tra DHCP đã hoạt động chưa)
 
@@ -35,7 +35,15 @@ Video demo kết quả: https://drive.google.com/file/d/1a7-xC8VH5uqeKXG2GPDaJvr
 - Nếu sai: chặn gói ARP lại và có thể log hoặc báo động.
 - Ngăn chặn kẻ tấn công giả mạo địa chỉ MAC/IP để đánh lừa client hoặc gateway.
 
-- Trong trường hợp kẻ tấn công sẽ cố gắng để gửi gói tin ARP reply đến nạn nhân và gateway với cặp MAC-IP của các gói tin ARP reply sẽ có dạng là (MAC kẻ tấn công - IP nạn nhân) gửi đến cho gateway và (MAC kẻ tấn công - IP gateway) gửi đến cho nạn nhân, tuy nhiên nếu các gói tin này phải đi qua switch được cài đặt DAI kết hợp DHCP Snooping thì tại đây các gói tin sẽ bị lọc, theo binding table thì cặp MAC-IP của kẻ tấn công là (MAC kẻ tấn công - IP kẻ tấn công) không khớp với các gói ARP reply của kẻ tấn công (MAC kẻ tấn công - IP nạn nhân) hoặc (MAC kẻ tấn công - IP gateway), nên 2 gói này đều sẽ bị đánh rớt và không đến được gateway/nạn nhân.
+- Trong tấn công ARP Spoofing, kẻ tấn công sẽ gửi các gói ARP Reply giả mạo với nội dung:
+- **(MAC của kẻ tấn công – IP của nạn nhân) gửi đến Gateway**
+- **(MAC của kẻ tấn công – IP của Gateway) gửi đến nạn nhân**
+- → Mục đích là đánh lừa cả hai bên, khiến lưu lượng đi qua kẻ tấn công.
+
+- Tuy nhiên, nếu switch được bật DHCP Snooping + DAI, thì các gói ARP này sẽ bị kiểm tra. Switch sẽ so sánh thông tin trong gói ARP với bảng DHCP Snooping Binding Table (chứa cặp MAC-IP hợp lệ).
+- Do trong bảng chỉ có cặp hợp lệ là (MAC của kẻ tấn công – IP của kẻ tấn công), nên nếu gói ARP khai là (MAC của kẻ tấn công – IP của nạn nhân hoặc gateway) thì sẽ không khớp binding → gói bị đánh rớt (drop) và không đến được nạn nhân hay gateway.
+
+- → Nhờ vậy, DAI sẽ ngăn chặn hiệu quả ARP Spoofing.
 
 ## III. CẤU HÌNH DHCP SNOOPING
 - ```config terminal```
