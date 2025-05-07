@@ -1,9 +1,15 @@
 # Tìm hiểu phương pháp tấn công ARP spoofing
-Video demo kết quả: https://drive.google.com/file/d/1DUSlMw_-61xfg30d0sf0nBhbV_j1evlU/view?usp=sharing
+## Xem video demo
+https://drive.google.com/file/d/1DUSlMw_-61xfg30d0sf0nBhbV_j1evlU/view?usp=sharing
+
+## Xem video cài đặt Switch Layer 2
+https://drive.google.com/drive/folders/1HhFszxTLNMGfCvgKNVve8jBDY2Y2YTh_?usp=drive_link
+
 ## Yêu cầu tối thiểu về nội dung lý thuyết:
 - Tổng quan về ARP spoofing (khái niệm, phân loại, cách tiến hành, ...).
 - Mối liên hệ giữa phương pháp tấn công này với một số phương pháp tấn công khác.
 - Cách phòng chống tấn công.
+
 ## Yêu cầu tối thiểu về nội dung demo:
 - Demo 1 phương pháp tấn công có sử dụng ARP spoofing.
 - Demo giải pháp phòng chống.
@@ -84,6 +90,8 @@ MÔ HÌNH MẠNG
 - ```arpspoof -i eth0 -t 192.168.1.9 -r 192.168.1.1```(trường hợp gateway có IP là 192.168.1.1 và nạn nhân có IP là 192.168.1.9, tiến hành tấn công ARPSpoof )
 
 ## VIII. BỔ SUNG
-- Nếu có thực hiện tấn công DNS Spoofing kết hợp ARP Spoofing thì ta dựng sẵn web server bằng Apache, Nginx,.. trên máy tấn công và tiến hành cấu hình file /etc/ettercap/etter.dns bằng cách thêm câu lệnh ```*			A	192.168.1.9 ``` với 192.168.1.9 là IP của máy tấn công, * là mọi truy cập website đều sẽ điều hướng về web 192.168.1.9.
-- Nếu chỉ muốn khiến nạn nhân mất mạng, không truy cập được internet thì ta có thể thực hiện ```sudo sysctl -w net.ipv4.ip_forward=0```, từ chối việc chuyển tiếp gói tin, khiến gói tin mắc kẹt ở máy kẻ tấn công mà không được chuyển đi tiếp.
+- Nếu có thực hiện tấn công DNS Spoofing kết hợp ARP Spoofing thì ta dựng sẵn web server bằng Apache, Nginx,.. trên máy tấn công và tiến hành cấu hình file /etc/ettercap/etter.dns bằng cách thêm câu lệnh 
+```*			A	192.168.1.9 ``` với 192.168.1.9 là IP của máy tấn công, * là mọi truy cập website đều sẽ điều hướng về web 192.168.1.9.
+- Nếu chỉ muốn khiến nạn nhân mất mạng, không truy cập được internet thì ta có thể thực hiện 
+```sudo sysctl -w net.ipv4.ip_forward=0```, từ chối việc chuyển tiếp gói tin, khiến gói tin mắc kẹt ở máy kẻ tấn công mà không được chuyển đi tiếp.
 - Tấn công nghe lén, ta thực hiện bằng cách ```sudo sysctl -w net.ipv4.ip_forward=1```, cho phép biến máy kẻ tấn công thành trạm trung gian chuyển tiếp gói tin , từ đó thu thâp dữ liệu bằng các công cụ chẳng hạn như WireShark, từ đó lấy được những thông tin được gửi đi qua các kênh truyền không an toàn, không được mã hóa.
