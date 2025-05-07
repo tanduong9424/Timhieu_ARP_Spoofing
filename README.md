@@ -15,7 +15,7 @@ Video demo kết quả: https://drive.google.com/file/d/1a7-xC8VH5uqeKXG2GPDaJvr
 MÔ HÌNH MẠNG
 ![](topology.png)
 
-## I. CẤU HÌNH DHCP Ở SWITCH
+## I. CẤU HÌNH DHCP Ở ROUTER
 - ```config terminal```
 - ```ip dhcp excluded-address 192.168.1.1 192.168.1.5``` (Không cấp dãy ip 192.168.1.1->192.168.1.5 cho client)
 - ```ip dhcp pool DHCP_ARP``` (đặt tên cho pool DHCPDHCP)
@@ -24,9 +24,17 @@ MÔ HÌNH MẠNG
 - ```dns-server 8.8.8.8 1.1.1.1``` (chỉ định DNS serverserver)
 - ```end```
 - ```show run | s dhcp``` (kiểm tra DHCP đã hoạt động chưa)
+## II. CẤU HÌNH Ở SWITCH
+- ```config terminal```
+- ```int vlan 1```
+- ```ip add 192.168.1.2 255.255.255.0```
+- ```no shut```
+- ```exit```
+- ```no ip dhcp snooping information option```
+- ```int g0/0``` (cấu hình cổng từ router đến switch là trust, không cần kiểm tra gói tin đi qua đường này )
+- ```ip dhcp snooping trust```
 
-
-## II. Nguyên lý phòng chống
+## IIII. Nguyên lý phòng chống
 - DHCP Snooping xây dựng một cơ sở dữ liệu ánh xạ (binding table) giữa địa chỉ IP, MAC, cổng switch và VLAN, dựa trên các gói tin DHCP hợp lệ khi có yêu cầu cấp phát địa chỉ IP từ client đến DHCP server.
 - Dynamic ARP Inspection (DAI) là một cơ chế bảo mật dùng để ngăn chặn ARP Spoofing, nó kiểm tra tính hợp lệ của các gói ARP bằng cách so sánh thông tin trong gói ARP với cơ sở dữ liệu binding của DHCP Snooping.
 
@@ -46,13 +54,13 @@ MÔ HÌNH MẠNG
 
 → Nhờ vậy, DAI sẽ ngăn chặn hiệu quả ARP Spoofing.
 
-## III. CẤU HÌNH DHCP SNOOPING
+## IV. CẤU HÌNH DHCP SNOOPING
 - ```config terminal```
 - ```ip dhcp snooping```
 - ```ip dhcp snooping vlan 1``` (cài đặt DHCP Snooping cho Vlan 1)
 - ```show ip dhcp snooping binding``` (show ra bảng binding)
 
-## IV. CẤU HÌNH DYNAMIC ARP INSPECTION
+## V. CẤU HÌNH DYNAMIC ARP INSPECTION
 - ```config terminal```
 - ```ip arp inspection vlan 1``` (cài đặt DAI cho VLan 1)
 - ```ip arp inspection validate src-mac dst-mac ip```
@@ -64,14 +72,18 @@ MÔ HÌNH MẠNG
 - ```show ip arp inspection interfaces``` (Xem bảng trust/untrust)
 - ```show run | s arp``` ( kiểm tra DAI chạy chưa)
 
-## V. CẤU HÌNH TELNET Ở ROUTER
+## VI. CẤU HÌNH TELNET Ở ROUTER
 - ```enable secret cisco```
 - ```line vty 0 4```
 - ```password 123```
 - ```login```
 
-## VI. THỰC HIỆN TẤN CÔNG ARP SPOOFING
+## VII. THỰC HIỆN TẤN CÔNG ARP SPOOFING
 - ```sudo sysctl -w net.ipv4.ip_forward=1``` (forward gói tin về lại client)
-
 - ```nmap -sn 192.168.1.0/24``` (liệt kê host đang hoạt động, để tìm ra gateway và nạn nhân )
 - ```arpspoof -i eth0 -t 192.168.1.9 -r 192.168.1.1```(trường hợp gateway có IP là 192.168.1.1 và nạn nhân có IP là 192.168.1.9, tiến hành tấn công ARPSpoof )
+
+## VIII. BỔ SUNG
+- Nếu có thực hiện tấn công DNS Spoofing kết hợp ARP Spoofing thì ta dựng sẵn web server bằng Apache, Nginx,.. trên máy tấn công và tiến hành cấu hình file /etc/ettercap/etter.dns bằng cách thêm câu lệnh ```*			A	192.168.1.9 ``` với 192.168.1.9 là IP của máy tấn công, * là mọi truy cập website đều sẽ điều hướng về web 192.168.1.9.
+- Nếu chỉ muốn khiến nạn nhân mất mạng, không truy cập được internet thì ta có thể thực hiện ```sudo sysctl -w net.ipv4.ip_forward=0```, từ chối việc chuyển tiếp gói tin, khiến gói tin mắc kẹt ở máy kẻ tấn công mà không được chuyển đi tiếp.
+- Tấn công nghe lén, ta thực hiện bằng cách ```sudo sysctl -w net.ipv4.ip_forward=1```, cho phép biến máy kẻ tấn công thành trạm trung gian chuyển tiếp gói tin , từ đó thu thâp dữ liệu bằng các công cụ chẳng hạn như WireShark, từ đó lấy được những thông tin được gửi đi qua các kênh truyền không an toàn, không được mã hóa.
