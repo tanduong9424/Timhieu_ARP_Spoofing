@@ -1,6 +1,4 @@
 # Tìm hiểu phương pháp tấn công ARP spoofing
-## Xem video demo
-https://drive.google.com/file/d/1DUSlMw_-61xfg30d0sf0nBhbV_j1evlU/view?usp=sharing
 
 ## Xem video cài đặt Switch Layer 2
 https://drive.google.com/drive/folders/1HhFszxTLNMGfCvgKNVve8jBDY2Y2YTh_?usp=drive_link
