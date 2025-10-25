@@ -81,6 +81,9 @@ MÔ HÌNH MẠNG
 - ```line vty 0 4```
 - ```password 123```
 - ```login```
+- Để bật telnet trên máy nạn nhận
+- ```dism /online /Enable-Feature /FeatureName:TelnetClient```
+
 
 ## VII. THỰC HIỆN TẤN CÔNG ARP SPOOFING
 - ```sudo sysctl -w net.ipv4.ip_forward=1``` (forward gói tin về lại client)
