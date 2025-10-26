@@ -3,7 +3,7 @@
 ## Cách cài đặt Switch Layer 2
 https://drive.google.com/drive/folders/1HhFszxTLNMGfCvgKNVve8jBDY2Y2YTh_?usp=drive_link
 ## Video demo quá trình cấu hình
-
+https://www.youtube.com/watch?v=1dm-6aczEgE
 
 ## Yêu cầu tối thiểu về nội dung lý thuyết:
 - Tổng quan về ARP spoofing (khái niệm, phân loại, cách tiến hành, ...).
