@@ -68,10 +68,10 @@ MÔ HÌNH MẠNG
 
 ## V. CẤU HÌNH DYNAMIC ARP INSPECTION
 - ```config terminal```
-- ```ip arp inspection vlan 1``` (cài đặt DAI cho VLan 1)
-- ```ip arp inspection validate src-mac dst-mac ip```
 - ```interface GigabitEthernet0/0```(cổng từ switch đến router không cần kiểm tra nên để trust )
 - ```ip arp inspection trust ```
+- ```ip arp inspection vlan 1``` (cài đặt DAI cho VLan 1)
+- ```ip arp inspection validate src-mac dst-mac ip```
 - ```end```
 
 - ```no ip arp inspection vlan 1``` (Tắt DAI)
